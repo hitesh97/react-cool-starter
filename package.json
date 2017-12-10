@@ -42,9 +42,7 @@
     "start:prod": "better-npm-run start:prod",
     "start:production:docker": "yarn build && yarn start:prod:docker",
     "start:prod:docker": "better-npm-run start:prod:docker",
-    "build": "yarn build:client && yarn build:server",
-    "build:client": "yarn clean:client && better-npm-run build:client",
-    "build:server": "yarn clean:server && better-npm-run build:server",
+    "build": "yarn clean:build && better-npm-run build",
     "lint": "yarn lint:js && yarn lint:style",
     "lint:js": "better-npm-run lint:js",
     "lint:style": "better-npm-run lint:style",
@@ -74,7 +72,6 @@
         "PORT": 8080
       }
     },
-<<<<<<< HEAD
     "start:prod:docker": {
       "command": "node ./index.js",
       "env": {
@@ -86,13 +83,9 @@
         "PORT": 80
       }
     },
-    "build:client": {
-      "command": "webpack --progress --hide-modules --config ./tools/webpack/webpack.client.babel.js",
-=======
     "build": {
       "command":
         "webpack --progress --hide-modules --config ./tools/webpack/config.babel.js",
->>>>>>> master
       "env": {
         "NODE_ENV": "production"
       }
