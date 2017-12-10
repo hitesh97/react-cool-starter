@@ -1,36 +1,32 @@
 /* @flow */
 
-import _ from 'lodash';
+import _ from 'lodash/fp';
 
-import {
-  USERS_INVALID,
-  USERS_REQUESTING,
-  USERS_FAILURE,
-  USERS_SUCCESS,
-} from './action';
 import type { Home, Action } from '../../types';
 
 type State = Home;
 
 const initialState = {
-  readyStatus: USERS_INVALID,
+  readyStatus: 'USERS_INVALID',
   err: null,
-  list: [],
+  list: []
 };
 
 export default (state: State = initialState, action: Action): State => {
   switch (action.type) {
-    case USERS_REQUESTING:
-      return _.assign({}, state, { readyStatus: USERS_REQUESTING });
-    case USERS_FAILURE:
-      return _.assign({}, state, {
-        readyStatus: USERS_FAILURE,
-        err: action.err,
+    case 'USERS_REQUESTING':
+      return _.assign(state, {
+        readyStatus: 'USERS_REQUESTING'
       });
-    case USERS_SUCCESS:
-      return _.assign({}, state, {
-        readyStatus: USERS_SUCCESS,
-        list: action.data,
+    case 'USERS_FAILURE':
+      return _.assign(state, {
+        readyStatus: 'USERS_FAILURE',
+        err: action.err
+      });
+    case 'USERS_SUCCESS':
+      return _.assign(state, {
+        readyStatus: 'USERS_SUCCESS',
+        list: action.data
       });
     default:
       return state;

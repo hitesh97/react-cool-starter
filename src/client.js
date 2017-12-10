@@ -1,11 +1,13 @@
 /* @flow */
 
 import React from 'react';
-import { render, unmountComponentAtNode } from 'react-dom';
+// $FlowFixMe: it's not an error
+import { hydrate, unmountComponentAtNode } from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
 import { Provider } from 'react-redux';
 import createHistory from 'history/createBrowserHistory';
 import { ConnectedRouter } from 'react-router-redux';
+import RedBox from 'redbox-react';
 
 import configureStore from './redux/store';
 
@@ -18,15 +20,15 @@ const mountNode = document.getElementById('react-view');
 const renderApp = () => {
   const App = require('./containers/App').default;
 
-  render(
-    <AppContainer>
+  hydrate(
+    <AppContainer errorReporter={({ error }) => <RedBox error={error} />}>
       <Provider store={store}>
         <ConnectedRouter history={history}>
           <App />
         </ConnectedRouter>
       </Provider>
     </AppContainer>,
-    mountNode,
+    mountNode
   );
 };
 
@@ -36,9 +38,7 @@ if (module.hot) {
     try {
       renderApp();
     } catch (error) {
-      const RedBox = require('redbox-react').default;
-
-      render(<RedBox error={error} />, mountNode);
+      hydrate(<RedBox error={error} />, mountNode);
     }
   };
 

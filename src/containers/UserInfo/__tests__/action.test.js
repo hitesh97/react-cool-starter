@@ -4,12 +4,7 @@ import axios from 'axios';
 import httpAdapter from 'axios/lib/adapters/http';
 import nock from 'nock';
 
-import {
-  fetchUser,
-  USER_REQUESTING,
-  USER_FAILURE,
-  USER_SUCCESS,
-} from '../action';
+import { fetchUser } from '../action';
 
 const host = 'http://localhost';
 
@@ -24,11 +19,13 @@ describe('fetch user data', () => {
     name: 'Welly',
     phone: '007',
     email: 'test@gmail.com',
-    website: 'www.test.com',
+    website: 'www.test.com'
   };
-  const errorMessage = 'Oops! Something went wrong.';
+  const errorMessage = 'Request failed with status code 404';
 
-  afterEach(() => { nock.disableNetConnect(); });
+  afterEach(() => {
+    nock.disableNetConnect();
+  });
 
   test('creates USER_SUCCESS when fetching user has been done', () => {
     nock(host)
@@ -36,13 +33,14 @@ describe('fetch user data', () => {
       .reply(200, response);
 
     const expectedActions = [
-      { type: USER_REQUESTING, userId },
-      { type: USER_SUCCESS, userId, data: response },
+      { type: 'USER_REQUESTING', userId },
+      { type: 'USER_SUCCESS', userId, data: response }
     ];
     const store = mockStore({ info: null });
 
-    store.dispatch(fetchUser('test', axios, host))
-      .then(() => { expect(store.getActions()).toEqual(expectedActions); });
+    store.dispatch(fetchUser('test', axios, host)).then(() => {
+      expect(store.getActions()).toEqual(expectedActions);
+    });
   });
 
   test('creates USER_FAILURE when fail to fetch user', () => {
@@ -51,12 +49,13 @@ describe('fetch user data', () => {
       .replyWithError(errorMessage);
 
     const expectedActions = [
-      { type: USER_REQUESTING, userId },
-      { type: USER_FAILURE, userId, err: new Error([errorMessage]) },
+      { type: 'USER_REQUESTING', userId },
+      { type: 'USER_FAILURE', userId, err: errorMessage }
     ];
     const store = mockStore({ err: null });
 
-    store.dispatch(fetchUser('test', axios, host))
-      .then(() => { expect(store.getActions()).toEqual(expectedActions); });
+    store.dispatch(fetchUser('test', axios, host)).then(() => {
+      expect(store.getActions()).toEqual(expectedActions);
+    });
   });
 });

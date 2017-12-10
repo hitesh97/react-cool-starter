@@ -12,16 +12,17 @@ import rootReducer from './reducers';
 export default (history: Object, initialState: Object = {}): Store => {
   const middlewares = [
     thunk.withExtraArgument(axios),
-    routerMiddleware(history),
+    routerMiddleware(history)
   ];
-
-  const enhancers = [
-    applyMiddleware(...middlewares),
-    __DEV__ && typeof window === 'object' && typeof window.devToolsExtension !== 'undefined' ?
-      window.devToolsExtension() : f => f,
-  ];
-
-  const store: Store = createStore(rootReducer, initialState, compose(...enhancers));
+  const composeEnhancers =
+    (typeof window === 'object' &&
+      window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) ||
+    compose;
+  const enhancers = composeEnhancers(
+    applyMiddleware(...middlewares)
+    // Other store enhancers if any
+  );
+  const store: Store = createStore(rootReducer, initialState, enhancers);
 
   if (module.hot) {
     // Enable Webpack hot module replacement for reducers
@@ -31,7 +32,9 @@ export default (history: Object, initialState: Object = {}): Store => {
 
         store.replaceReducer(nextReducer);
       } catch (error) {
-        console.error(chalk.red(`==> 😭  Reducer hot reloading error ${error}`));
+        console.error(
+          chalk.red(`==> 😭  Reducer hot reloading error ${error}`)
+        );
       }
     });
   }

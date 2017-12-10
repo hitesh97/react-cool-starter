@@ -3,32 +3,30 @@ import renderer from 'react-test-renderer';
 import { mount } from 'enzyme';
 import { StaticRouter } from 'react-router-dom';
 
-import {
-  USER_REQUESTING,
-  USER_FAILURE,
-  USER_SUCCESS,
-} from '../action';
 import { UserInfo } from '../index';
 
 describe('<UserInfo />', () => {
-  const tree = (props, actions) => renderer.create(
-    <StaticRouter location={''} context={{}}>
-      <UserInfo {...props} {...actions} />
-    </StaticRouter>,
-  ).toJSON();
+  const tree = (props, actions) =>
+    renderer
+      .create(
+        <StaticRouter context={{}}>
+          <UserInfo {...props} {...actions} />
+        </StaticRouter>
+      )
+      .toJSON();
 
   test('should call fetchUserIfNeeded when componentDidMount', () => {
     const mockAction = jest.fn();
     const props = {
       userInfo: {},
-      match: { params: { id: 1 } },
+      match: { params: { id: 1 } }
     };
     const actions = { fetchUserIfNeeded: mockAction };
 
     mount(
-      <StaticRouter location={''} context={{}}>
+      <StaticRouter context={{}}>
         <UserInfo {...props} {...actions} />
-      </StaticRouter>,
+      </StaticRouter>
     );
 
     expect(mockAction).toHaveBeenCalled();
@@ -37,7 +35,7 @@ describe('<UserInfo />', () => {
   test('renders the loading status if data invalid', () => {
     const props = {
       userInfo: {},
-      match: { params: { id: 1 } },
+      match: { params: { id: 1 } }
     };
     const actions = { fetchUserIfNeeded: () => {} };
 
@@ -46,8 +44,8 @@ describe('<UserInfo />', () => {
 
   test('renders the loading status if requesting data', () => {
     const props = {
-      userInfo: { 1: { readyStatus: USER_REQUESTING } },
-      match: { params: { id: 1 } },
+      userInfo: { 1: { readyStatus: 'USER_REQUESTING' } },
+      match: { params: { id: 1 } }
     };
     const actions = { fetchUserIfNeeded: () => {} };
 
@@ -56,8 +54,8 @@ describe('<UserInfo />', () => {
 
   test('renders an error if loading failed', () => {
     const props = {
-      userInfo: { 1: { readyStatus: USER_FAILURE } },
-      match: { params: { id: 1 } },
+      userInfo: { 1: { readyStatus: 'USER_FAILURE' } },
+      match: { params: { id: 1 } }
     };
     const actions = { fetchUserIfNeeded: () => {} };
 
@@ -68,16 +66,16 @@ describe('<UserInfo />', () => {
     const props = {
       userInfo: {
         1: {
-          readyStatus: USER_SUCCESS,
+          readyStatus: 'USER_SUCCESS',
           info: {
             name: 'Welly',
             phone: '007',
             email: 'test@gmail.com',
-            website: 'www.test.com',
-          },
-        },
+            website: 'www.test.com'
+          }
+        }
       },
-      match: { params: { id: 1 } },
+      match: { params: { id: 1 } }
     };
     const actions = { fetchUserIfNeeded: () => {} };
 
