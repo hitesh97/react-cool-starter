@@ -17,6 +17,8 @@ import { getLoadableState } from 'loadable-components/server';
 import Helmet from 'react-helmet';
 import chalk from 'chalk';
 import openBrowser from 'react-dev-utils/openBrowser';
+import i18nMiddleware from 'i18next-express-middleware';
+import { I18nextProvider } from 'react-i18next';
 
 import createHistory from 'history/createMemoryHistory';
 import configureStore from './utils/configureStore';
@@ -25,6 +27,7 @@ import routes from './routes';
 // $FlowFixMe: isn't an issue
 import assets from '../public/webpack-assets.json';
 import { port, host } from './config';
+import i18n from './i18n/server';
 
 const app = express();
 
@@ -38,6 +41,7 @@ app.use(compression());
 // Use for http request debug (show errors only)
 app.use(logger('dev', { skip: (req, res) => res.statusCode < 400 }));
 app.use(favicon(path.resolve(process.cwd(), 'public/favicon.ico')));
+app.use(i18nMiddleware.handle(i18n));
 
 if (!__DEV__) {
   app.use(express.static(path.resolve(process.cwd(), 'public')));
@@ -98,14 +102,21 @@ app.get('*', (req, res) => {
       // Load data from server-side first
       await loadBranchData();
 
+      const locale = req.language;
+      const resources = i18n.getResourceBundle(locale, 'common');
+      const i18nServer = i18n.cloneInstance();
+      i18nServer.changeLanguage(locale);
+
       const staticContext = {};
       const AppComponent = (
-        <Provider store={store}>
-          {/* Setup React-Router server-side rendering */}
-          <StaticRouter location={req.path} context={staticContext}>
-            {renderRoutes(routes)}
-          </StaticRouter>
-        </Provider>
+        <I18nextProvider i18n={i18nServer}>
+          <Provider store={store}>
+            {/* Setup React-Router server-side rendering */}
+            <StaticRouter location={req.path} context={staticContext}>
+              {renderRoutes(routes)}
+            </StaticRouter>
+          </Provider>
+        </I18nextProvider>
       );
 
       // Check if the render result contains a redirect, if so we need to set
@@ -123,6 +134,8 @@ app.get('*', (req, res) => {
         const htmlContent = renderToString(AppComponent);
         const initialState = store.getState();
         const loadableStateTag = loadableState.getScriptTag();
+        const i18nClient = { locale, resources };
+        const i18n = { i18nClient };
 
         // Check page status
         const status = staticContext.status === '404' ? 404 : 200;
@@ -136,7 +149,8 @@ app.get('*', (req, res) => {
               assets,
               htmlContent,
               initialState,
-              loadableStateTag
+              loadableStateTag,
+              i18n
             )
           );
       });

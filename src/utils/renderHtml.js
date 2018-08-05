@@ -8,7 +8,8 @@ export default (
   assets: Object,
   htmlContent: string,
   initialState: Object,
-  loadableStateTag: string
+  loadableStateTag: string,
+  i18n: Object
 ): string => {
   // Use pre-defined assets in development. "main" is the default webpack generated name.
   const envAssets = __DEV__
@@ -58,6 +59,7 @@ export default (
           // Use serialize-javascript for mitigating XSS attacks. See the following security issues:
           // http://redux.js.org/docs/recipes/ServerRendering.html#security-considerations
           window.__INITIAL_STATE__=${serialize(initialState)};
+          window.__I18N__=${serialize(i18n)};
         </script>
 
         <!-- Insert bundled scripts into <script> tag -->

@@ -5,13 +5,18 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import Helmet from 'react-helmet';
+import { translate } from 'react-i18next';
 
 import { usersAction } from '../../actions';
 import type { Home as HomeType, Dispatch, ReduxState } from '../../types';
 import { UserList } from '../../components';
 import styles from './styles.scss';
 
-type Props = { home: HomeType, fetchUsersIfNeeded: () => void };
+type Props = {
+  home: HomeType,
+  fetchUsersIfNeeded: () => void,
+  t: (key: string) => void
+};
 
 // Export this for unit testing more easily
 export class Home extends PureComponent<Props> {
@@ -39,9 +44,12 @@ export class Home extends PureComponent<Props> {
   };
 
   render() {
+    const { t } = this.props;
+
     return (
       <div className={styles.Home}>
         <Helmet title="Home" />
+        <h1>{t('greeting')}</h1>
         {this.renderUserList()}
       </div>
     );
@@ -57,5 +65,6 @@ const connector = connect(
 
 export default compose(
   withRouter,
-  connector
+  connector,
+  translate()
 )(Home);

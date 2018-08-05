@@ -1,0 +1,12 @@
+import i18n from 'i18next';
+
+i18n.init({
+  whitelist: ['en'],
+  fallbackLng: 'en',
+
+  // have a common namespace used around the full app
+  ns: ['common'],
+  defaultNS: 'common'
+});
+
+export default i18n;
