@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<UserList /> renders 1`] = `
+<div
+  className="FeaturedProductsList"
+>
+  <h4>
+    Featured PRoducts
+  </h4>
+  <ul>
+    <li>
+      <img
+        src="https://d3fdwrtpsinh7j.cloudfront.netundefined"
+      />
+      <h1 />
+      <h4 />
+    </li>
+  </ul>
+</div>
+`;

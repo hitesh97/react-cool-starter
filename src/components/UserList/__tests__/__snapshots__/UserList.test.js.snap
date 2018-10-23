@@ -5,7 +5,7 @@ exports[`<UserList /> renders 1`] = `
   className="UserList"
 >
   <h4>
-    User List
+    User List Changed!
   </h4>
   <ul>
     <li>

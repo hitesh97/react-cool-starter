@@ -10,7 +10,7 @@ type Props = { list: Array<Object> };
 
 export default ({ list }: Props) => (
   <div className={styles.UserList}>
-    <h4>User List</h4>
+    <h4>User List Changed!</h4>
     <ul>
       {list.map(({ id, name }) => (
         <li key={id}>

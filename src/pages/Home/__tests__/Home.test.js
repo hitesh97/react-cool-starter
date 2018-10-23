@@ -15,13 +15,13 @@ describe('<Home />', () => {
       )
       .toJSON();
 
-  it('should call fetchUsersIfNeeded when componentDidMount', () => {
+  it('should call fetchFeaturedProductsIfNeeded when componentDidMount', () => {
     const mockAction = jest.fn();
     const props = {
       home: {}
     };
     const actions = {
-      fetchUsersIfNeeded: mockAction
+      fetchFeaturedProductsIfNeeded: mockAction
     };
 
     mount(
@@ -32,7 +32,7 @@ describe('<Home />', () => {
 
     expect(mockAction).toHaveBeenCalled();
   });
-
+  /* 
   it('renders the loading status if data invalid', () => {
     const props = {
       home: { readyStatus: 'USERS_INVALID' }
@@ -60,7 +60,7 @@ describe('<Home />', () => {
     expect(tree(props, actions)).toMatchSnapshot();
   });
 
-  it('renders the <UserList /> if loading was successful', () => {
+   it('renders the <UserList /> if loading was successful', () => {
     const props = {
       home: {
         readyStatus: 'USERS_SUCCESS',
@@ -68,6 +68,41 @@ describe('<Home />', () => {
       }
     };
     const actions = { fetchUsersIfNeeded: () => {} };
+
+    expect(tree(props, actions)).toMatchSnapshot();
+  }); */
+
+  it('renders the <FeaturedProductsList /> if loading was successful', () => {
+    const props = {
+      home: {
+        readyStatus: 'FEATURED_PRODUCTS_SUCCESS',
+        featuredProducts: [
+          [
+            {
+              imageName: 'FTB-1-2HR.jpg',
+              imgUrl: '/Images/HomeFeaturedProducts/FTB-1-2HR.jpg',
+              title: 'Exfo FTB-1 Familie',
+              subtitle:
+                'Het FTB-1 Platform is een open testoplossing voor het.',
+              links: [
+                {
+                  linkText: 'Meer informatie',
+                  linkUrl:
+                    '/products/Exfo/SDH-SONET-Ethernet/FTB-1?BaseModelId=89542',
+                  linkType: 'button'
+                },
+                {
+                  linkText: 'Alles weergeven SDH / SONET / Ethernet',
+                  linkUrl: '/product-group/5/sdh-sonet-ethernet',
+                  linkType: 'href'
+                }
+              ]
+            }
+          ]
+        ]
+      }
+    };
+    const actions = { fetchFeaturedProductsIfNeeded: () => {} };
 
     expect(tree(props, actions)).toMatchSnapshot();
   });

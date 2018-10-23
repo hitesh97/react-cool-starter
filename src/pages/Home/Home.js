@@ -6,43 +6,52 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import Helmet from 'react-helmet';
 
-import { usersAction } from '../../actions';
+import { featuredProductsAction } from '../../actions';
 import type { Home as HomeType, Dispatch, ReduxState } from '../../types';
-import { UserList } from '../../components';
+import { FeaturedProductsList } from '../../components';
 import styles from './styles.scss';
 
-type Props = { home: HomeType, fetchUsersIfNeeded: () => void };
+type Props = {
+  home: HomeType,
+  fetchFeaturedProductsIfNeeded: () => void
+};
 
 // Export this for unit testing more easily
 export class Home extends PureComponent<Props> {
   componentDidMount() {
-    const { fetchUsersIfNeeded } = this.props;
+    const { fetchFeaturedProductsIfNeeded } = this.props;
 
-    fetchUsersIfNeeded();
+    fetchFeaturedProductsIfNeeded();
   }
 
-  renderUserList = () => {
+  renderProductsList = () => {
     const { home } = this.props;
 
     if (
       !home.readyStatus ||
-      home.readyStatus === 'USERS_INVALID' ||
-      home.readyStatus === 'USERS_REQUESTING'
+      home.readyStatus === 'FEATURED_PRODUCTS_REQUESTING' ||
+      home.readyStatus === 'FEATURED_PRODUCTS_INVALID'
     ) {
-      return <p>Loading...</p>;
-    }
-    if (home.readyStatus === 'USERS_FAILURE') {
-      return <p>Oops, Failed to load list!</p>;
+      return <p>Loading products...</p>;
     }
 
-    return <UserList list={home.list} />;
+    if (home.readyStatus === 'FEATURED_PRODUCTS_FAILURE') {
+      return (
+        <p>
+          Oops, Failed to load Featured Products!
+          <br />
+          {home.err}
+        </p>
+      );
+    }
+    return <FeaturedProductsList list={home.featuredProducts} />;
   };
 
   render() {
     return (
       <div className={styles.Home}>
         <Helmet title="Home" />
-        {this.renderUserList()}
+        {this.renderProductsList()}
       </div>
     );
   }
@@ -51,7 +60,8 @@ export class Home extends PureComponent<Props> {
 const connector = connect(
   ({ home }: ReduxState) => ({ home }),
   (dispatch: Dispatch) => ({
-    fetchUsersIfNeeded: () => dispatch(usersAction.fetchUsersIfNeeded())
+    fetchFeaturedProductsIfNeeded: () =>
+      dispatch(featuredProductsAction.fetchFeaturedProductsIfNeeded())
   })
 );
 

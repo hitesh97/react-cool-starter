@@ -1,6 +1,6 @@
 /* @flow */
 
-import { usersAction, userAction } from './actions';
+import { userAction, featuredProductsAction } from './actions';
 import App from './app';
 import { asyncHome, asyncUserInfo, NotFound } from './pages';
 
@@ -13,8 +13,8 @@ export default [
         exact: true,
         component: asyncHome, // Add your route here
         loadData: () => [
-          usersAction.fetchUsersIfNeeded()
           // Add other pre-fetched actions here
+          featuredProductsAction.fetchFeaturedProductsIfNeeded()
         ]
       },
       {
