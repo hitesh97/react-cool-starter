@@ -55,7 +55,7 @@
   },
   "betterScripts": {
     "dev": {
-      "command": "nodemon .",
+      "command": "nodemon ./app.js",
       "env": {
         "NODE_PATH": "./src",
         "NODE_ENV": "development",
@@ -63,7 +63,7 @@
       }
     },
     "start": {
-      "command": "node .",
+      "command": "node ./app.js",
       "env": {
         "NODE_PATH": "./src",
         "NODE_ENV": "production",
