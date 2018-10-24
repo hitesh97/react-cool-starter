@@ -3,10 +3,6 @@
   "version": "2.6.0",
   "description": "A starter for an universal web application for microlease.",
   "main": "index.js",
-  "repository": {
-    "type": "git",
-    "url": ""
-  },
   "keywords": [
     "starter",
     "boilerpate",
@@ -32,7 +28,7 @@
   "sideEffects": false,
   "scripts": {
     "dev": "better-npm-run dev",
-    "start": "node ./app.js",
+    "start": "npm rebuild node-sass && node ./app.js",
     "start:local": "better-npm-run start",
     "build": "yarn clean:build && better-npm-run build",
     "analyze": "yarn clean:build && better-npm-run analyze",
