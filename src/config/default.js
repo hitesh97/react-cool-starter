@@ -2,7 +2,7 @@
 
 module.exports = {
   host: process.env.NODE_HOST || 'localhost', // Define your host from 'package.json'
-  port: process.env.PORT,
+  port: process.env.PORT || 3000,
   app: {
     htmlAttributes: { lang: 'en' },
     title: 'Microlease new Improved Website (SSR)',
