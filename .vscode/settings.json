@@ -1,0 +1,4 @@
+{
+  "appService.defaultWebAppToDeploy": "/subscriptions/80690c93-34c7-43e3-95fb-c592ca3a4dfe/resourceGroups/WebTesting/providers/Microsoft.Web/sites/web-er",
+  "appService.deploySubpath": ""
+}
