@@ -24,6 +24,7 @@ export default (
         <!--[if IE]>
           <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
         <![endif]-->
+        <meta name="google-site-verification" content="DjkYjIKyHyHOmT54aayfEWMRPby95SSJxk9CyMokL-E" />
 
         <link rel="apple-touch-icon" href="apple-touch-icon.png">
         <link rel="shortcut icon" href="/favicon.ico">
